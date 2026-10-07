@@ -30,3 +30,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variáveis de ambiente (segredos)
+.env
+.env.*
+!.env.example
+
+# Claude Code (local)
+.claude/

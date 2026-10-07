@@ -1,24 +1,37 @@
-# PDF Pal
+# Vazão — Controle de Produção
 
-faz um app conforme layout da logo, ele é pra armazenar, é pára lançar e armazenar dados do PDF em anexo
+App (PWA) para lançar e consultar registros de produção de **DHZs** e **Moinhos**, com cadastros, filtro por período, aderência (Vazão ÷ Set-point) e exportação em CSV/PDF.
 
-This project was built with [Lovable](https://lovable.dev).
+Stack: TanStack Start (React 19 + SSR), Tailwind CSS, Postgres no [Neon](https://neon.tech).
 
-## Build with Lovable
+## Rodando localmente
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c738c757-2939-434d-bf1c-9a5d1c3e7060).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requer Node.js 22+.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm install
+cp .env.example .env      # e preencha DATABASE_URL com a string do Neon
+npm run db:migrate        # cria as tabelas (idempotente)
+npm run dev               # http://localhost:8080
 ```
+
+## Produção
+
+```sh
+npm run build
+npm start                 # node .output/server/index.mjs (porta 3000; defina PORT para mudar)
+```
+
+Defina a variável de ambiente `DATABASE_URL` no servidor/hospedagem.
+
+## Estrutura
+
+- `src/routes/index.tsx` — tela principal (DHZ, Moinhos, Cadastros)
+- `src/lib/api.ts` — server functions (todo acesso ao banco passa por aqui)
+- `src/lib/db.server.ts` — conexão com o Neon (apenas servidor)
+- `db/schema.sql` — esquema do banco; `scripts/migrate.mjs` aplica
+- `public/manifest.webmanifest`, `public/sw.js`, `public/icons/` — PWA
+
+## PWA
+
+Em produção o app pode ser instalado no celular/computador ("Adicionar à tela inicial" / ícone de instalar no navegador). Requer HTTPS (ou localhost).
