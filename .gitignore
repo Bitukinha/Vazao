@@ -38,3 +38,8 @@ dist-ssr
 
 # Claude Code (local)
 .claude/
+
+# Vercel
+.vercel
+
+.vercel
