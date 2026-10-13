@@ -3,8 +3,8 @@ import { createServerFn } from "@tanstack/react-start";
 // Tabelas e colunas permitidas — nada fora daqui chega ao SQL.
 export const TABLES = {
   registros_producao: {
-    num: ["dureza_milho", "agua_adicionada", "amp", "vazao_canjica", "vazao_germen", "vazao_milho", "pct_germen"],
-    text: ["dhz_nome", "prod_final", "nome_resp"],
+    num: ["agua_adicionada", "amp", "vazao_canjica", "vazao_germen", "vazao_milho", "pct_germen"],
+    text: ["dhz_nome", "dureza_milho", "prod_final", "nome_resp"],
   },
   registros_moinho: {
     num: ["set_point", "vazao"],

@@ -29,7 +29,7 @@ const input =
 const btn =
   "rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 sm:py-2";
 
-type FieldDef = { key: string; label: string; kind: "num" | "text" | "select"; source?: Tipo; required?: boolean };
+type FieldDef = { key: string; label: string; kind: "num" | "text" | "select"; source?: Tipo; options?: string[]; required?: boolean };
 type TabDef = { table: Tabela; title: string; fields: FieldDef[]; file: string };
 
 const DHZ_TAB: TabDef = {
@@ -38,7 +38,7 @@ const DHZ_TAB: TabDef = {
   file: "controle_dhz",
   fields: [
     { key: "dhz_nome", label: "DHZ", kind: "select", source: "dhz" },
-    { key: "dureza_milho", label: "Dureza Milho", kind: "num" },
+    { key: "dureza_milho", label: "Dureza Milho", kind: "select", options: ["Mole", "Duro"] },
     { key: "agua_adicionada", label: "Água Adicionada", kind: "num" },
     { key: "amp", label: "Amp.", kind: "num" },
     { key: "vazao_canjica", label: "Vazão Canjica (kg/h)", kind: "num" },
@@ -262,6 +262,8 @@ function RecordTab({ def, cads }: { def: TabDef; cads: Cad[] }) {
   const aderColor =
     aderMedia == null ? "" : aderMedia >= 95 ? "text-green-600" : aderMedia >= 80 ? "text-yellow-600" : "text-destructive";
 
+  const opts = (f: FieldDef) => f.options ?? cads.filter((c) => c.tipo === f.source).map((c) => c.nome);
+
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm({ ...form, [k]: e.target.value });
 
@@ -283,14 +285,12 @@ function RecordTab({ def, cads }: { def: TabDef; cads: Cad[] }) {
               {f.kind === "select" ? (
                 <select className={input} required={f.required} value={form[f.key] ?? ""} onChange={set(f.key)}>
                   <option value="">Selecione…</option>
-                  {cads
-                    .filter((c) => c.tipo === f.source)
-                    .map((c) => (
-                      <option key={c.id} value={c.nome}>
-                        {c.nome}
-                      </option>
-                    ))}
-                  {form[f.key] && !cads.some((c) => c.tipo === f.source && c.nome === form[f.key]) && (
+                  {opts(f).map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                  {form[f.key] && !opts(f).includes(form[f.key]!) && (
                     <option value={form[f.key]}>{form[f.key]}</option>
                   )}
                 </select>

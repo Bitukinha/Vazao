@@ -39,3 +39,6 @@ create table if not exists registros_moinho (
 
 create index if not exists registros_producao_data_idx on registros_producao (data desc, hora desc);
 create index if not exists registros_moinho_data_idx on registros_moinho (data desc, hora desc);
+
+-- Dureza do milho passou a ser "Mole" / "Duro" (antes numérica).
+alter table registros_producao alter column dureza_milho type text using dureza_milho::text;
