@@ -12,6 +12,7 @@ import {
   type Tabela,
   type Tipo,
 } from "@/lib/api";
+import { buildXlsx } from "@/lib/xlsx";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -210,6 +211,24 @@ function RecordTab({ def, cads }: { def: TabDef; cads: Cad[] }) {
     a.click();
   }
 
+  function exportXlsx() {
+    const head = ["Data", "Hora", ...def.fields.map((f) => f.label)];
+    const data = rows.map((r) => [
+      brDate(r.data),
+      r.hora.slice(0, 5),
+      ...def.fields.map((f) => {
+        const c = cell(r, f);
+        if (c === "—") return null;
+        const n = Number(c);
+        return f.kind === "num" && !isNaN(n) ? n : c;
+      }),
+    ]);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(buildXlsx(def.title, head, data));
+    a.download = `${def.file}_${nowDate()}.xlsx`;
+    a.click();
+  }
+
   function exportPdf() {
     const head = ["Data", "Hora", ...def.fields.map((f) => f.label)];
     const body = rows
@@ -349,6 +368,12 @@ function RecordTab({ def, cads }: { def: TabDef; cads: Cad[] }) {
               onClick={exportCsv}
             >
               Excel (CSV)
+            </button>
+            <button
+              className="rounded-md bg-secondary px-4 py-2.5 text-sm font-semibold text-secondary-foreground sm:py-2"
+              onClick={exportXlsx}
+            >
+              Excel (Mac)
             </button>
             <button
               className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground sm:py-2"
