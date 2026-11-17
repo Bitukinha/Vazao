@@ -42,3 +42,6 @@ create index if not exists registros_moinho_data_idx on registros_moinho (data d
 
 -- Dureza do milho passou a ser "Mole" / "Duro" (antes numérica).
 alter table registros_producao alter column dureza_milho type text using dureza_milho::text;
+
+-- Novo campo: Retido na 7.1 (antes do produto final).
+alter table registros_producao add column if not exists retido_7_1 numeric;

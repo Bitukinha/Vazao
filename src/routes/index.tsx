@@ -46,6 +46,7 @@ const DHZ_TAB: TabDef = {
     { key: "vazao_germen", label: "Vazão Gérmen (kg/h)", kind: "num" },
     { key: "vazao_milho", label: "Vazão Milho (kg/h)", kind: "num" },
     { key: "pct_germen", label: "% Gérmen gerado", kind: "num" },
+    { key: "retido_7_1", label: "Retido na 7.1", kind: "num" },
     { key: "prod_final", label: "Prod. Final", kind: "text" },
     { key: "nome_resp", label: "Nome Resp.", kind: "select", source: "responsavel", required: true },
   ],
